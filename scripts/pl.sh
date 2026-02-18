@@ -54,10 +54,11 @@ cmd_templates() {
           *) shift ;;
         esac
       done
-      local body="{\"prompt_name\": \"$name\""
-      [[ -n "$label" ]] && body+=", \"label\": \"$label\""
-      body+="}"
-      api POST "/prompt-templates" -d "$body"
+      local body="{}"
+      [[ -n "$label" ]] && body="{\"label\": \"$label\"}"
+      local encoded_name
+      encoded_name="$(printf '%s' "$name" | python3 -c 'import sys,urllib.parse;print(urllib.parse.quote(sys.stdin.read(),safe=""))')"
+      api POST "/prompt-templates/${encoded_name}" -d "$body"
       ;;
     publish)
       local name="${1:?Usage: pl.sh templates publish <name> --commit \"msg\"}"
