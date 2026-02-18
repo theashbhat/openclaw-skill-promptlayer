@@ -1,75 +1,81 @@
 # openclaw-skill-promptlayer
 
-An [OpenClaw](https://openclaw.ai) skill for interacting with [PromptLayer](https://promptlayer.com) — prompt management, versioning, evaluations, and LLM observability.
+An [OpenClaw](https://openclaw.ai) skill for [PromptLayer](https://promptlayer.com) — prompt management, versioning, evaluations, and LLM observability.
+
+## What it does
+
+Gives your OpenClaw agent the ability to:
+
+- **Manage prompts** — list, get, version, and publish prompt templates
+- **Log LLM requests** — track every request with metadata, scores, and tags
+- **Run evaluations** — execute eval pipelines against datasets
+- **Manage agents** — list and run PromptLayer agent workflows
+- **Work with datasets** — list and create test datasets
 
 ## Installation
 
-Copy into your OpenClaw skills directory:
+Copy the skill to your OpenClaw workspace:
 
 ```bash
-cp -r promptlayer/ ~/clawd/skills/promptlayer/
+cp -r promptlayer/ ~/your-workspace/skills/promptlayer/
+```
+
+Or clone directly:
+
+```bash
+cd ~/your-workspace/skills
+git clone https://github.com/theashbhat/openclaw-skill-promptlayer.git promptlayer
 ```
 
 ## Configuration
 
-Set your PromptLayer API key:
+1. Get your API key from [PromptLayer Dashboard → Settings](https://dashboard.promptlayer.com/settings)
 
-```bash
-export PROMPTLAYER_API_KEY=pl_your_key_here
-```
+2. Run the setup script:
+   ```bash
+   bash skills/promptlayer/scripts/setup.sh
+   ```
 
-Get your key from [PromptLayer Settings](https://promptlayer.com/settings).
-
-Verify setup:
-
-```bash
-bash skills/promptlayer/scripts/setup.sh
-```
+   Or manually add to `~/.openclaw/.env`:
+   ```
+   PROMPTLAYER_API_KEY=pl_xxxxxxxxxxxxx
+   ```
 
 ## Usage
 
-### Via CLI Script
+Once installed, your OpenClaw agent can use PromptLayer naturally:
+
+> "List my prompt templates"
+> "Get the production version of my welcome-email prompt"
+> "Run the accuracy eval pipeline"
+> "Show me my PromptLayer agents"
+
+### CLI
+
+The skill includes `pl.sh` for direct API access:
 
 ```bash
-# List prompt templates
-bash skills/promptlayer/scripts/pl.sh templates list
+# List templates
+./scripts/pl.sh templates list
 
-# Get a specific template (optionally by release label)
-bash skills/promptlayer/scripts/pl.sh templates get my-prompt --label prod
+# Get a specific template
+./scripts/pl.sh templates get welcome-email --label prod
 
-# Publish a template
-bash skills/promptlayer/scripts/pl.sh templates publish my-prompt --commit "improved tone"
+# Log a request
+echo '{"function_name": "openai.chat.completions.create", ...}' | ./scripts/pl.sh log
 
-# Log an LLM request
-echo '{"function_name":"openai.chat.completions.create","kwargs":{...}}' | \
-  bash skills/promptlayer/scripts/pl.sh log
+# Track a score
+./scripts/pl.sh track-score 12345 accuracy 0.95
 
-# Track scores and metadata
-bash skills/promptlayer/scripts/pl.sh track-score req_123 accuracy 0.95
-bash skills/promptlayer/scripts/pl.sh track-metadata req_123 --json '{"env":"prod"}'
-
-# Datasets & Evaluations
-bash skills/promptlayer/scripts/pl.sh datasets list
-bash skills/promptlayer/scripts/pl.sh evals list
-bash skills/promptlayer/scripts/pl.sh evals run pipeline_456
-
-# Agents
-bash skills/promptlayer/scripts/pl.sh agents list
-bash skills/promptlayer/scripts/pl.sh agents run agent_789 --input '{"prompt":"hello"}'
+# Run an eval
+./scripts/pl.sh evals run pipeline_abc123
 ```
 
-### Via OpenClaw Agent
+## Links
 
-Once installed, your OpenClaw agent can use PromptLayer directly. Ask it to:
-
-- "List my prompt templates"
-- "Get the prod version of my onboarding prompt"
-- "Run the accuracy eval pipeline"
-- "Log this request to PromptLayer"
-
-## API Reference
-
-See [`references/api.md`](references/api.md) for the full endpoint reference.
+- [PromptLayer Docs](https://docs.promptlayer.com)
+- [PromptLayer REST API](https://docs.promptlayer.com/reference/rest-api-reference)
+- [OpenClaw Docs](https://docs.openclaw.ai)
 
 ## License
 
