@@ -102,7 +102,7 @@ cmd_templates() {
 # --- Logging (path: /rest/log-request) ---
 cmd_log() {
   local body; body="$(cat)"
-  api POST "/rest/log-request" -d "$body"
+  api POST "/log-request" -d "$body"
 }
 
 # --- Tracking (paths: /rest/track-*) ---
