@@ -6,7 +6,7 @@ set -euo pipefail
 BASE_URL="${PROMPTLAYER_BASE_URL:-https://api.promptlayer.com}"
 API_KEY="${PROMPTLAYER_API_KEY:?Set PROMPTLAYER_API_KEY env var}"
 
-auth_header="Authorization: Bearer $API_KEY"
+auth_header="X-API-KEY: $API_KEY"
 json_header="Content-Type: application/json"
 
 api() {

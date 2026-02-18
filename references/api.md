@@ -1,7 +1,7 @@
 # PromptLayer API Reference
 
 Base URL: `https://api.promptlayer.com`
-Auth: `Authorization: Bearer <PROMPTLAYER_API_KEY>`
+Auth: `X-API-KEY: <PROMPTLAYER_API_KEY>`
 
 ## Prompt Templates
 
